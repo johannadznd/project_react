@@ -1,17 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { ThemeProvider } from "@material-tailwind/react";
+import { Router } from "./Router";
+import { BrowserRouter } from "react-router-dom";
+import NavBar from "./commun/components/NavBar";
+import { Provider } from "react-redux";
+import store, { history } from "./store/index";
+import { saveState } from "./store/localStorage";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+store.subscribe(() => {
+  saveState(store.getState());
+});
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider>
+      <Provider store={store}>
+        <BrowserRouter history={history}>
+          <NavBar></NavBar>
+          <Router></Router>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
